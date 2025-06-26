@@ -1,0 +1,984 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exercícios de Ciências para ENCCEJA</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbb;
+            --accent-color: #ff9a3c;
+            --light-color: #f5f7fa;
+            --dark-color: #333;
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+            --warning-color: #ffc107;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--dark-color);
+            background-color: var(--light-color);
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            font-size: 1.1rem;
+            font-weight: 300;
+            margin-bottom: 15px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            overflow-x: auto;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background-color: #f1f1f1;
+            border: none;
+            outline: none;
+            border-radius: 8px 8px 0 0;
+            margin-right: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .tab.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .exercise {
+            margin-bottom: 30px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+        }
+        
+        .exercise h3 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+        
+        .exercise p {
+            margin-bottom: 15px;
+        }
+        
+        .options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .option {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .option.selected {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .option.correct {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .option.incorrect {
+            background-color: var(--danger-color);
+            color: white;
+        }
+        
+        .feedback {
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .feedback.correct {
+            background-color: rgba(40, 167, 69, 0.1);
+            border: 1px solid var(--success-color);
+            color: var(--success-color);
+            display: block;
+        }
+        
+        .feedback.incorrect {
+            background-color: rgba(220, 53, 69, 0.1);
+            border: 1px solid var(--danger-color);
+            color: var(--danger-color);
+            display: block;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+        }
+        
+        .btn-check {
+            margin-top: 10px;
+        }
+        
+        .btn-next {
+            background-color: var(--accent-color);
+            color: white;
+            margin-top: 15px;
+        }
+        
+        .btn-next:hover {
+            background-color: #e09030;
+        }
+        
+        .result-container {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .result-container h2 {
+            margin-bottom: 20px;
+            color: var(--primary-color);
+        }
+        
+        .result-score {
+            font-size: 2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+        
+        .result-message {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .btn-restart {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px 25px;
+            font-size: 1.1rem;
+        }
+        
+        @media (max-width: 768px) {
+            .options {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            .tab {
+                padding: 8px 12px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Exercícios de Ciências para ENCCEJA</h1>
+            <p class="subtitle">Prepare-se para o exame com exercícios práticos e feedback imediato</p>
+        </header>
+        
+        <div class="score">
+            Pontuação: <span id="score">0</span> / <span id="total">0</span>
+        </div>
+        
+        <div class="progress-container">
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="tabs">
+                <button class="tab active" data-tab="fisica">Física</button>
+                <button class="tab" data-tab="quimica">Química</button>
+                <button class="tab" data-tab="biologia">Biologia</button>
+                <button class="tab" data-tab="mix">Mistura</button>
+            </div>
+            
+            <div id="fisica" class="tab-content active">
+                <!-- Física Exercises -->
+                <div class="exercise" id="fisica1">
+                    <h3>Exercício 1: Movimento Uniforme</h3>
+                    <p>Um carro percorre uma distância de 120 km em 2 horas. Qual é a velocidade média do carro?</p>
+                    <div class="options">
+                        <div class="option" data-value="60 km/h">A) 60 km/h</div>
+                        <div class="option" data-value="120 km/h">B) 120 km/h</div>
+                        <div class="option" data-value="240 km/h">C) 240 km/h</div>
+                        <div class="option" data-value="30 km/h">D) 30 km/h</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica1', '60 km/h')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A velocidade média é calculada pela fórmula: velocidade = distância/tempo. Portanto, velocidade = 120 km/2 h = 60 km/h.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="fisica2">
+                    <h3>Exercício 2: Força e Aceleração</h3>
+                    <p>Uma força de 20 N é aplicada a um objeto de massa 5 kg. Qual é a aceleração resultante?</p>
+                    <div class="options">
+                        <div class="option" data-value="4 m/s²">A) 4 m/s²</div>
+                        <div class="option" data-value="100 m/s²">B) 100 m/s²</div>
+                        <div class="option" data-value="25 m/s²">C) 25 m/s²</div>
+                        <div class="option" data-value="10 m/s²">D) 10 m/s²</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica2', '4 m/s²')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A aceleração é calculada pela fórmula: a = F/m. Portanto, a = 20 N/5 kg = 4 m/s².</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="fisica3">
+                    <h3>Exercício 3: Energia Cinética</h3>
+                    <p>Um objeto de massa 2 kg se move com velocidade de 10 m/s. Qual é sua energia cinética?</p>
+                    <div class="options">
+                        <div class="option" data-value="100 J">A) 100 J</div>
+                        <div class="option" data-value="200 J">B) 200 J</div>
+                        <div class="option" data-value="50 J">C) 50 J</div>
+                        <div class="option" data-value="10 J">D) 10 J</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica3', '100 J')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A energia cinética é calculada pela fórmula: E = (1/2)mv². Portanto, E = (1/2) × 2 kg × (10 m/s)² = 100 J.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="fisica4">
+                    <h3>Exercício 4: Leis de Newton</h3>
+                    <p>Qual das seguintes afirmações descreve a primeira lei de Newton (Princípio da Inércia)?</p>
+                    <div class="options">
+                        <div class="option" data-value="Corpos em movimento tendem a permanecer em movimento e corpos em repouso tendem a permanecer em repouso, a menos que uma força externa atue sobre eles.">A) Corpos em movimento tendem a permanecer em movimento e corpos em repouso tendem a permanecer em repouso, a menos que uma força externa atue sobre eles.</div>
+                        <div class="option" data-value="A força é proporcional à massa e à aceleração.">B) A força é proporcional à massa e à aceleração.</div>
+                        <div class="option" data-value="A cada ação corresponde uma reação igual e oposta.">C) A cada ação corresponde uma reação igual e oposta.</div>
+                        <div class="option" data-value="A força de atrito depende do material das superfícies em contato.">D) A força de atrito depende do material das superfícies em contato.</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica4', 'Corpos em movimento tendem a permanecer em movimento e corpos em repouso tendem a permanecer em repouso, a menos que uma força externa atue sobre eles.')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A primeira lei de Newton (Princípio da Inércia) afirma que corpos em movimento tendem a permanecer em movimento e corpos em repouso tendem a permanecer em repouso, a menos que uma força externa atue sobre eles.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="fisica5">
+                    <h3>Exercício 5: Pressão</h3>
+                    <p>Um líquido exerce uma pressão de 100 kPa a uma profundidade de 10 m. Qual é a densidade do líquido? (Considere g = 10 m/s²)</p>
+                    <div class="options">
+                        <div class="option" data-value="1000 kg/m³">A) 1000 kg/m³</div>
+                        <div class="option" data-value="10000 kg/m³">B) 10000 kg/m³</div>
+                        <div class="option" data-value="100 kg/m³">C) 100 kg/m³</div>
+                        <div class="option" data-value="100000 kg/m³">D) 100000 kg/m³</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica5', '1000 kg/m³')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A pressão em líquidos é calculada pela fórmula: P = ρgh. Rearranjando para encontrar a densidade: ρ = P/(gh). Portanto, ρ = 100000 Pa / (10 m/s² × 10 m) = 1000 kg/m³.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="fisica6">
+                    <h3>Exercício 6: Eletricidade</h3>
+                    <p>Um resistor de 10 Ω tem uma corrente de 2 A passando por ele. Qual é a tensão (voltage) no resistor?</p>
+                    <div class="options">
+                        <div class="option" data-value="20 V">A) 20 V</div>
+                        <div class="option" data-value="5 V">B) 5 V</div>
+                        <div class="option" data-value="10 V">C) 10 V</div>
+                        <div class="option" data-value="40 V">D) 40 V</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica6', '20 V')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A tensão é calculada pela Lei de Ohm: V = IR. Portanto, V = 2 A × 10 Ω = 20 V.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="fisica7">
+                    <h3>Exercício 7: Óptica</h3>
+                    <p>Um objeto é colocado a 30 cm de uma lente convergente com foco de 10 cm. Qual é a posição da imagem formada?</p>
+                    <div class="options">
+                        <div class="option" data-value="15 cm do outro lado da lente">A) 15 cm do outro lado da lente</div>
+                        <div class="option" data-value="30 cm do outro lado da lente">B) 30 cm do outro lado da lente</div>
+                        <div class="option" data-value="20 cm do outro lado da lente">C) 20 cm do outro lado da lente</div>
+                        <div class="option" data-value="10 cm do outro lado da lente">D) 10 cm do outro lado da lente</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica7', '20 cm do outro lado da lente')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>Usando a equação da lente: 1/f = 1/p + 1/q, onde f é o foco (10 cm), p é a distância do objeto (30 cm), e q é a distância da imagem. Rearranjando: 1/q = 1/f - 1/p = 1/10 - 1/30 = 2/30 = 1/15. Portanto, q = 15 cm. A imagem é formada a 15 cm do outro lado da lente.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="fisica8">
+                    <h3>Exercício 8: Termodinâmica</h3>
+                    <p>Um gás ideal expande de 2 m³ para 5 m³ a uma pressão constante de 100 kPa. é o trabalho realizado pelo gás?</p>
+                    <div class="options">
+                        <div class="option" data-value="300 kJ">A) 300 kJ</div>
+                        <div class="option" data-value="200 kJ">B) 200 kJ</div>
+                        <div class="option" data-value="150 kJ">C) 150 kJ</div>
+                        <div class="option" data-value="50 kJ">D) 50 kJ</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('fisica8', '300 kJ')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>O trabalho em uma expansão a pressão constante é calculado por: W = PΔV. Portanto, W = 100 kPa × (5 m³ - 2 m³) = 100 kPa × 3 m³ = 300 kJ.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="quimica" class="tab-content">
+                <!-- Química Exercises -->
+                <div class="exercise" id="quimica1">
+                    <h3>Exercício 9: Fórmula Química</h3>
+                    <p>Qual das seguintes fórmulas representa o ácido sulfúrico?</p>
+                    <div class="options">
+                        <div class="option" data-value="H₂SO₄">A) H₂SO₄</div>
+                        <div class="option" data-value="H₂SO₃">B) H₂SO₃</div>
+                        <div class="option" data-value="H₂CO₃">C) H₂CO₃</div>
+                        <div class="option" data-value="HNO₃">D) HNO₃</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica1', 'H₂SO₄')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A fórmula do ácido sulfúrico é H₂SO₄. O ácido sulfúrico é um ácido forte formado por dois átomos de hidrogênio, um átomo de enxofre e quatro átomos de oxigênio.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="quimica2">
+                    <h3>Exercício 10: Reação Química</h3>
+                    <p>Qual das seguintes reações representa a combustão do hidrogênio?</p>
+                    <div class="options">
+                        <div class="option" data-value="2H₂ + O₂ → 2H₂O">A) 2H₂ + O₂ → 2H₂O</div>
+                        <div class="option" data-value="2H₂ + Cl₂ → 2HCl">B) 2H₂ + Cl₂ → 2HCl</div>
+                        <div class="option" data-value="H₂ + Cl₂ → 2HCl">C) H₂ + Cl₂ → 2HCl</div>
+                        <div class="option" data-value="2H₂ + N₂ → N₂H₄">D) 2H₂ + N₂ → N₂H₄</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica2', '2H₂ + O₂ → 2H₂O')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A reação de combustão do hidrogênio é: 2H₂ + O₂ → 2H₂O. Nesta reação, o hidrogênio reage com o oxigênio para formar água.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="quimica3">
+                    <h3>Exercício 11: Massa Molar</h3>
+                    <p>Qual é a massa molar do cloreto de sódio (NaCl)? (Massa atômica de Na = 23 g/mol, Cl = 35.5 g/mol)</p>
+                    <div class="options">
+                        <div class="option" data-value="58.5 g/mol">A) 58.5 g/mol</div>
+                        <div class="option" data-value="59 g/mol">B) 59 g/mol</div>
+                        <div class="option" data-value="60 g/mol">C) 60 g/mol</div>
+                        <div class="option" data-value="23 g/mol">D) 23 g/mol</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica3', '58.5 g/mol')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A massa molar do cloreto de sódio é calculada pela soma das massas atômicas de sódio e cloro: 23 g/mol + 35.5 g/mol = 58.5 g/mol.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="quimica4">
+                    <h3>Exercício 12: Lei de Avogadro</h3>
+                    <p>Quantos mols de gás contêm 1.204 × 10²⁴ moléculas? (Número de Avogadro = 6.02 × 10²³ mol⁻¹)</p>
+                    <div class="options">
+                        <div class="option" data-value="2 mol">A) 2 mol</div>
+                        <div class="option" data-value="1 mol">B) 1 mol</div>
+                        <div class="option" data-value="3 mol">C) 3 mol</div>
+                        <div class="option" data-value="4 mol">D) 4 mol</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica4', '2 mol')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>O número de mols é calculado pela fórmula: n = N/Nₐ, onde N é o número de partículas e Nₐ é o número de Avogadro. Portanto, n = 1.204 × 10²⁴ / 6.02 × 10²³ = 2 mol.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="quimica5">
+                    <h3>Exercício 13: Equilíbrio Químico</h3>
+                    <p>Para a reação: N₂(g) + 3H₂(g) ⇌ 2NH₃(g), qual das seguintes mudanças deslocará o equilíbrio para a direita?</p>
+                    <div class="options">
+                        <div class="option" data-value="Aumento da pressão">A) Aumento da pressão</div>
+                        <div class="option" data-value="Diminuição da temperatura">B) Diminuição da temperatura</div>
+                        <div class="option" data-value="Adição de um catalisador">C) Adição de um catalisador</div>
+                        <div class="option" data-value="Remoção de NH₃">D) Remoção de NH₃</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica5', 'Aumento da pressão')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>De acordo com o Princípio de Le Chatelier, um aumento na pressão deslocará o equilíbrio para a direita (lado com menos moles de gás). A reação tem 4 moles de gás no lado esquerdo e 2 moles no lado direito, então um aumento de pressão favorece a formação de mais NH₃.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="quimica6">
+                    <h3>Exercício 14: pH</h3>
+                    <p>Qual é o pH de uma solução ácida com concentração de H⁺ de 1 × 10⁻³ M?</p>
+                    <div class="options">
+                        <div class="option" data-value="3">A) 3</div>
+                        <div class="option" data-value="4">B) 4</div>
+                        <div class="option" data-value="5">C) 5</div>
+                        <div class="option" data-value="11">D) 11</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica6', '3')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>O pH é calculado pela fórmula: pH = -log[H⁺]. Portanto, pH = -log(1 × 10⁻³) = 3.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="quimica7">
+                    <h3>Exercício 15: Reação de Neutralização</h3>
+                    <p>Quantos mL de uma solução 0.1 M de NaOH são necessários para neutralizar 25 mL de uma solução 0.1 M de HCl?</p>
+                    <div class="options">
+                        <div class="option" data-value="25 mL">A) 25 mL</div>
+                        <div class="option" data-value="50 mL">B) 50 mL</div>
+                        <div class="option" data-value="10 mL">C) 10 mL</div>
+                        <div class="option" data-value="100 mL">D) 100 mL</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica7', '25 mL')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>Para a neutralização, a quantidade de base deve ser igual à quantidade de ácido. Como as concentrações são iguais (0.1 M), os volumes também devem ser iguais. Portanto, são necessários 25 mL de NaOH para neutralizar 25 mL de HCl.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="quimica8">
+                    <h3>Exercício 16: Tabelas Periódicas</h3>
+                    <p>Qual dos seguintes elementos pertence ao grupo dos metais alcalinos?</p>
+                    <div class="options">
+                        <div class="option" data-value="Sódio (Na)">A) Sódio (Na)</div>
+                        <div class="option" data-value="Ferro (Fe)">B) Ferro (Fe)</div>
+                        <div class="option" data-value="Cloro (Cl)">C) Cloro (Cl)</div>
+                        <div class="option" data-value="Oxigênio (O)">D) Oxigênio (O)</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('quimica8', 'Sódio (Na)')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>O sódio (Na) pertence ao grupo dos metais alcalinos (Grupo 1 da tabela periódica). Os metais alcalinos incluem lítio (Li), sódio (Na), potássio (K), rubídio (Rb), cério (Cs) e francium (Fr).</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="biologia" class="tab-content">
+                <!-- Biologia Exercises -->
+                <div class="exercise" id="biologia1">
+                    <h3>Exercício 17: Célula</h3>
+                    <p>Qual das seguintes estruturas é encontrada apenas em células eucarióticas?</p>
+                    <div class="options">
+                        <div class="option" data-value="Núcleo">A) Núcleo</div>
+                        <div class="option" data-value="Membrana plasmática">B) Membrana plasmática</div>
+                        <div class="option" data-value="Ribossomo">C) Ribossomo</div>
+                        <div class="option" data-value="Citoplasma">D) Citoplasma</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia1', 'Núcleo')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>O núcleo é uma estrutura encontrada apenas em células eucarióticas. Ele contém o material genético (DNA) e é delimitado por uma membrana nuclear. Células procarióticas não possuem núcleo verdadeiro.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="biologia2">
+                    <h3>Exercício 18: Metabolismo</h3>
+                    <p>Qual das seguintes opções descreve uma reação de catabolismo?</p>
+                    <div class="options">
+                        <div class="option" data-value="Digestão da comida">A) Digestão da comida</div>
+                        <div class="option" data-value="Síntese de proteínas">B) Síntese de proteínas</div>
+                        <div class="option" data-value="Fotosíntese">C) Fotosíntese</div>
+                        <div class="option" data-value="Fecundação">D) Fecundação</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia2', 'Digestão da comida')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A digestão da comida é uma reação de catabolismo, pois envolve a quebra de moléculas complexas (alimentos) em moléculas menores (nutrientes). As outras opções são processos anabólicos, que envolvem a síntese de moléculas complexas.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="biologia3">
+                    <h3>Exercício 19: Sistema Nervoso</h3>
+                    <p>Qual das seguintes opções é uma função do sistema nervoso?</p>
+                    <div class="options">
+                        <div class="option" data-value="Coordenação de movimentos">A) Coordenação de movimentos</div>
+                        <div class="option" data-value="Produção de energia">B) Produção de energia</div>
+                        <div class="option" data-value="Filtragem de sangue">C) Filtragem de sangue</div>
+                        <div class="option" data-value="Digestão de alimentos">D) Digestão de alimentos</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia3', 'Coordenação de movimentos')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A coordenação de movimentos é uma função do sistema nervoso. O sistema nervoso é responsável pela comunicação entre diferentes partes do corpo, permitindo a resposta a estímulos e a coordenação de atividades corporais. As outras opções são funções de outros sistemas: produção de energia (sistema respiratório), filtragem de sangue (sistema urinário) e digestão de alimentos (sistema digestivo).</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="biologia4">
+                    <h3>Exercício 20: Sistema Circulatório</h3>
+                    <p>Qual das seguintes opções descreve corretamente a função do sistema circulatório?</p>
+                    <div class="options">
+                        <div class="option" data-value="Transporte de oxigênio e nutrientes para as células">A) Transporte de oxigênio e nutrientes para as células</div>
+                        <div class="option" data-value="Filtragem de sangue para remover impurezas">B) Filtragem de sangue para remover impurezas</div>
+                        <div class="option" data-value="Coleta de CO₂ e outros resíduos metabólicos das células">C) Coleta de CO₂ e outros resíduos metabólicos das células</div>
+                        <div class="option" data-value="Todas as opções estão corretas">D) Todas as opções estão corretas</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia4', 'Todas as opções estão corretas')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>Todas as opções descrevem funções corretas do sistema circulatório. Ele transporta oxigênio e nutrientes para as células, filtra o sangue para remover impurezas e coleta CO₂ e outros resíduos metabólicos das células.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="biologia5">
+                    <h3>Exercício 21: Reprodução</h3>
+                    <p>Qual das seguintes opções descreve uma característica da reprodução sexuadap>
+                    <div class="options">
+                        <div class="option" data-value="Involução de dois indivíduos">A) Involução de dois indivíduos</div>
+                        <div class="option" data-value="Criação de descendentes genéticamente idênticos aos pais">B) Criação de descendentes genéticamente idênticos aos pais</div>
+                        <div class="option" data-value="Produção de um grande número de descendentes rapidamente">C) Produção de um grande número de descendentes rapidamente</div>
+                        <div class="option" data-value="Não requer gametas">D) Não requer gametas</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia5', 'Involução de dois indivíduos')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A involução de dois indivíduos é uma característica da reprodução sexuada. A reprodução sexuada envolve a combinação de material genético de dois indivíduos (geralmente um macho e uma fêmea) para formar descendentes com uma mistura genética única. As outras opções descrevem características da reprodução assexuada.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="biologia6">
+                    <h3>Exercício 22: Teoria da Evolução</h3>
+                    <p>Qual das seguintes opções descreve corretamente a teoria da evolução por seleção natural de Darwin?</p>
+                    <div class="options">
+                        <div class="option" data-value="Organismos que possuem características favoráveis têm maior probabilidade de sobreviver e reproduzir">A) Organismos que possuem características favoráveis têm maior probabilidade de sobreviver e reproduzir</div>
+                        <div class="option" data-value="Todos os organismos desenvolvem características que melhoram sua adaptação ao ambiente">B) Todos os organismos desenvolvem características que melhoram sua adaptação ao ambiente</div>
+                        <div class="option" data-value="A evolução ocorre de forma direcional em direção a um "design perfeito"">C) A evolução ocorre de forma direcional em direção a um "design perfeito"</div>
+                        <div class="option" data-value="A seleção natural elimina características úteis de uma população">D) A seleção natural elimina características úteis de uma população</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia6', 'Organismos que possuem características favoráveis têm maior probabilidade de sobreviver e reproduzir')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A teoria da evolução por seleção natural de Darwin afirma que organismos que possuem características favoráveis (adaptativas) têm maior probabilidade de sobreviver e reproduzir, passando essas características para a próxima geração. Com o tempo, isso resulta em populações que são melhor adaptadas ao seu ambiente.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="biologia7">
+                    <h3>Exercício 23: Ecologia</h3>
+                    <p>Qual das seguintes opções descreve corretamente um bioma?</p>
+                    <div class="options">
+                        <div class="option" data-value="Uma comunidade de organismos e seu ambiente físico">A) Uma comunidade de organismos e seu ambiente físico</div>
+                        <div class="option" data-value="Um grupo de espécies que competem por recursos limitados">B) Um grupo de espécies que competem por recursos limitados</div>
+                        <div class="option" data-value="A interação entre dois organismos diferentes">C) A interação entre dois organismos diferentes</div>
+                        <div class="option" data-value="Uma área geográfica com um clima uniforme ao longo do ano">D) Uma área geográfica com um clima uniforme ao longo do ano</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia7', 'Uma comunidade de organismos e seu ambiente físico')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>Um bioma é definido como uma comunidade de organismos (biótico) e seu ambiente físico (abiótico). Os biomas são grandes áreas geográficas com características climáticas e vegetação distintas, como a floresta tropical, a savana, o deserto, etc.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="biologia8">
+                    <h3>Exercício 24: Fotosíntese</h3>
+                    <p>Qual das seguintes opções descreve corretamente a equação da fotosíntese?</p>
+                    <div class="options">
+                        <div class="option" data-value="6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂">A) 6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂</div>
+                        <div class="option" data-value="6CO₂ + 6H₂O + O₂ → C₆H₁₂O₆ + 6O₂">B) 6CO₂ + 6H₂O + O₂ → C₆H₁₂O₆ + 6O₂</div>
+                        <div class="option" data-value="C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + luz">C) C₆H₁₂O₆ + 6O₂ → 6CO₂ + 6H₂O + luz</div>
+                        <div class="option" data-value="6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂">D) 6CO₂ + 6H₂O → C₆H₁₂O₆ + 6O₂</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('biologia8', '6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A equação da fotosíntese é: 6CO₂ + 6H₂O + luz → C₆H₁₂O₆ + 6O₂. Nesta reação, plantas e algas usam energia solar para converter dióxido de carbono e água em glicose (uma fonte de energia) e oxigênio.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div id="mix" class="tab-content">
+                <!-- Mixed Exercises -->
+                <div class="exercise" id="mix1">
+                    <h3>Exercício 25: Movimento Uniformemente Variado</h3>
+                    <p>Um automóvel parte do repouso e acelera com uma aceleração constante de 2 m/s². Qual será sua velocidade após 10 segundos?</p>
+                    <div class="options">
+                        <div class="option" data-value="20 m/s">A) 20 m/s</div>
+                        <div class="option" data-value="40 m/s">B) 40 m/s</div>
+                        <div class="option" data-value="10 m/s">C) 10 m/s</div>
+                        <div class="option" data-value="5 m/s">D) 5 m/s</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix1', '20 m/s')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A velocidade em movimento uniformemente variado é calculada pela fórmula: v = v₀ + at. Como o automóvel parte do repouso (v₀ = 0), temos: v = 0 + (2 m/s² × 10 s) = 20 m/s.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="mix2">
+                    <h3>Exercício 26: Reação de Redox</h3>
+                    <p>Qual das seguintes reações é uma reação redox?</p>
+                    <div class="options">
+                        <div class="option" data-value="2H₂ + O₂ → 2H₂O">A) 2H₂ + O₂ → 2H₂O</div>
+                        <div class="option" data-value="NaCl + AgNO₃ → NaNO₃ + AgCl">B) NaCl + AgNO₃ → NaNO₃ + AgCl</div>
+                        <div class="option" data-value="HCl + NaOH → NaCl + H₂O">C) HCl + NaOH → NaCl + H₂O</div>
+                        <div class="option" data-value="CaCO₃ → CaO + CO₂">D) CaCO₃ → CaO + CO₂</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix2', '2H₂ + O₂ → 2H₂O')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A reação 2H₂ + O₂ → 2H₂O é uma reação redox, pois envolve a transferência de elétrons. O hidrogênio perde elétrons (oxidação) e o oxigênio ganha elétrons (redução). As outras opções são reações de dupla troca (B), ácido-base (C) e descomposição (D).</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="mix3">
+                    <h3>Exercício 27: Metabolismo de Plantas</h3>
+                    <p>Qual das seguintes opções descreve corretamente a função da clorofila nas plantas?</p>
+                    <div class="options">
+                        <div class="option" data-value="Absorver energia da luz solar para a fotosíntese">A) Absorver energia da luz solar para a fotosíntese</div>
+                        <div class="option" data-value="Transportar água e nutrientes pelo xilema">B) Transportar água e nutrientes pelo xilema</div>
+                        <div class="option" data-value="Realizar a respiração celular">C) Realizar a respiração celular</div>
+                        <div class="option" data-value="Filtrar impurezas do sangue">D) Filtrar impurezas do sangue</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix3', 'Absorver energia da luz solar para a fotosíntese')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A clorofila é um pigmento verde encontrado nas células das plantas que absorve energia da luz solar para a fotosíntese. Ela é essencial para que as plantas convertam energia solar em energia química.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="mix4">
+                    <h3>Exercício 28: Leis de Mendel</h3>
+                    <p>Qual das seguintes opções descreve corretamente a primeira lei de Mendel (Lei da Uniformidade)?</p>
+                    <div class="options">
+                        <div class="option" data-value="Os organismos possuem dois fatores hereditários (genes) para cada caractéristica, um de cada progenitor">A) Os organismos possuem dois fatores hereditários (genes) para cada caractéristica, um de cada progenitor</div>
+                        <div class="option" data-value="Os fatores hereditários se misturam para formar um novo tipo">B) Os fatores hereditários se misturam para formar um novo tipo</div>
+                        <div class="option" data-value="Os organismos herdam características de apenas um progenitor">C) Os organismos herdam características de apenas um progenitor</div>
+                        <div class="option" data-value="Os fatores hereditários desaparecem nas gerações intermediárias">D) Os fatores hereditários desaparecem nas gerações intermediárias</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix4', 'Os organismos possuem dois fatores hereditários (genes) para cada caractéristica, um de cada progenitor')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A primeira lei de Mendel, também conhecida como Lei da Uniformidade, afirma que os organismos possuem dois fatores hereditários (genes) para cada caractéristica, um de cada progenitor. Esses fatores são independentes uns dos outros e não se misturam.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="mix5">
+                    <h3>Exercício 29: Reações Químicas</h3>
+                    <p>Qual das seguintes opções descreve corretamente uma característica de uma reação química exotérmica?</p>
+                    <div class="options">
+                        <div class="option" data-value="Libera energia para o ambiente">A) Libera energia para o ambiente</div>
+                        <div class="option" data-value="Absorve energia do ambiente">B) Absorve energia do ambiente</div>
+                        <div class="option" data-value="Tem uma entalpia de reação negativa">C) Tem uma entalpia de reação negativa</div>
+                        <div class="option" data-value="Todas as opções estão corretas">D) Todas as opções estão corretas</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix5', 'Todas as opções estão corretas')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>Uma reação química exotérmica libera energia para o ambiente (como calor), tem uma entalpia de reação negativa (ΔH < 0) e geralmente resulta em uma diminuição na energia potencial do sistema. Portanto, todas as opções estão corretas.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="mix6">
+                    <h3>Exercício 30: Movimento Circular Uniforme</h3>
+                    <p>Um objeto descreve um círculo completo de raio 4 m em 2 segundos. Qual é a velocidade escalar do objeto?</p>
+                    <div class="options">
+                        <div class="option" data-value="12.56 m/s">A) 12.56 m/s</div>
+                        <div class="option" data-value="8 m/s">B) 8 m/s</div>
+                        <div class="option" data-value="6.28 m/s">C) 6.28 m/s</div>
+                        <div class="option" data-value="4 m/s">D) 4 m/s</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix6', '6.28 m/s')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>A velocidade escalar em movimento circular uniforme é calculada pela fórmula: v = 2πr/T, onde r é o raio e T é o período. Portanto, v = (2 × π × 4 m) / 2 s = 8π/2 = 4π m/s ≈ 12.56 m/s.</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="mix7">
+                    <h3>Exercício 31: Tabela Periódica</h3>
+                    <p>Qual dos seguintes elementos é um metal alcalino terrestre?</p>
+                    <div class="options">
+                        <div class="option" data-value="Calcio (Ca)">A) Calcio (Ca)</div>
+                        <div class="option" data-value="Sódio (Na)">B) Sódio (Na)</div>
+                        <div class="option" data-value="Cloro (Cl)">C) Cloro (Cl)</div>
+                        <div class="option" data-value="Oxigênio (O)">D) Oxigênio (O)</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix7', 'Calcio (Ca)')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>O cálcio (Ca) é um metal alcalino terrestre (Grupo 2 da tabela periódica). Os metais alcalinos terrestres incluem berílio (Be), magnésio (Mg), cálcio (Ca), estrôncio (Sr), bário (Ba) e radium (Ra).</p>
+                    </div>
+                </div>
+                
+                <div class="exercise" id="mix8">
+                    <h3>Exercício 32: Sistema Nervoso</h3>
+                    <p>Qual das seguintes opções descreve corretamente a função do neurotransmissor acetilcolina?</p>
+                    <div class="options">
+                        <div class="option" data-value="Estimular a liberação de adrenalina no sistema nerv simpático">A) Estimular a liberação de adrenalina no sistema nervoso simpático</div>
+                        <div class="option" data-value="Transmitir impulsos nervosos entre neurônios e músculos">B) Transmitir impulsos nervosos entre neurônios e músculos</div>
+                        <div class="option" data-value="Inibir a transmissão de sinais no sistema nervoso parasimpático">C) Inibir a transmissão de sinais no sistema nervoso parasimpático</div>
+                        <div class="option" data-value="Aumentar a permeabilidade da membrana celular para íons potássio">D) Aumentar a permeabilidade da membrana celular para íons potássio</div>
+                    </div>
+                    <button class="btn btn-check" onclick="checkAnswer('mix8', 'Transmitir impulsos nervosos entre neurônios e músculos')">Verificar</button>
+                    <div class="feedback"></div>
+                    <div class="explanation" style="display: none;">
+                        <p>O acetilcolina é um neurotransmissor que transmite impulsos nervosos entre neurônios e músculos. Ele atua nos junções neuromusculares, permitindo a contracção muscular, e também em partes do sistema nervoso autônomo.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="result-container" id="resultContainer">
+            <h2>Resultado Final</h2>
+            <div class="result-score">Você acertou <span id="finalScore">0</span> de <span id="finalTotal">0</span> exercícios</div>
+            <div class="result-message" id="resultMessage"></div>
+            <button class="btn btn-restart" onclick="restartQuiz()">Iniciar Novamente</button>
+        </div>
+    </div>
+    
+    <script>
+        // Variáveis globais
+        let score = 0;
+        let totalExercises = 0;
+        let answeredExercises = 0;
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Contar total de exercícios
+            const exercises = document.querySelectorAll('.exercise');
+            totalExercises = exercises.length;
+            document.getElementById('total').textContent = totalExercises;
+            
+            // Configurar tabs
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remover active de todas as tabs e conteúdo
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Adicionar active na tab clicada e conteúdo correspondente
+                    this.classList.add('active');
+                    document.getElementById(this.getAttribute('data-tab')).classList.add('active');
+                });
+            });
+            
+            // Configurar opções dos exercícios
+            const options = document.querySelectorAll('.option');
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover seleção de todas as opções no mesmo exercício
+                    const exerciseId = this.parentElement.parentElement.id;
+                    const exerciseOptions = document.querySelectorAll(`#${exerciseId} .option`);
+                    exerciseOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Selecionar a opção clicada
+                    this.classList.add('selected');
+                });
+            });
+        });
+        
+        // Função para verificar a resposta
+        function checkAnswer(exerciseId, correctAnswer) {
+            const exercise = document.getElementById(exerciseId);
+            const selectedOption = exercise.querySelector('.option.selected');
+            const feedback = exercise.querySelector('.feedback');
+            const explanation = exercise.querySelector('.explanation');
+            const options = exercise.querySelectorAll('.option');
+            
+            // Verificar se uma opção foi selecionada
+            if (!selectedOption) {
+                feedback.textContent = 'Por favor, selecione uma resposta.';
+                feedback.className = 'feedback incorrect';
+                feedback.style.display = 'block';
+                return;
+            }
+            
+            // Verificar se a resposta está correta
+            const selectedValue = selectedOption.getAttribute('data-value');
+            const isCorrect = selectedValue === correctAnswer;
+            
+            // Atualizar pontuação
+            if (isCorrect && !selectedOption.classList.contains('correct')) {
+                score++;
+                document.getElementById('score').textContent = score;
+            }
+            
+            // Atualizar contador de exercícios respondidos
+            answeredExercises++;
+            updateProgress();
+            
+            // Marcar opções como corretas ou incorretas
+            options.forEach(option => {
+                const optionValue = option.getAttribute('data-value');
+                if (optionValue === correctAnswer) {
+                    option.classList.add('correct');
+                } else if (option === selectedOption && !isCorrect) {
+                    option.classList.add('incorrect');
+                }
+            });
+            
+            // Mostrar feedback
+            if (isCorrect) {
+                feedback.textContent = 'Correto! Parabéns.';
+                feedback.className = 'feedback correct';
+            } else {
+                feedback.textContent = 'Incorreto. Tente novamente.';
+                feedback.className = 'feedback incorrect';
+            }
+            feedback.style.display = 'block';
+            
+            // Mostrar explicação
+            explanation.style.display = 'block';
+            
+            // Desabilitar botão de verificar
+            const checkButton = exercise.querySelector('.btn-check');
+            checkButton.disabled = true;
+            checkButton.textContent = 'Verificado';
+        }
+        
+        // Função para atualizar a barra de progresso
+        function updateProgress() {
+            const percentage = (answeredExercises / totalExercises) * 100;
+            document.getElementById('progress').style.width = `${percentage}%`;
+            
+            // Verificar se todos os exercícios foram respondidos
+            if (answeredExercises === totalExercises) {
+                showResults();
+            }
+        }
+        
+        // Função para mostrar os resultados finais
+        function showResults() {
+            document.querySelectorAll('.exercise').forEach(exercise => {
+                exercise.style.display = 'none';
+            });
+            
+            document.querySelector('.tabs').style.display = 'none';
+            document.querySelector('.score').style.display = 'none';
+            document.querySelector('.progress-container').style.display = 'none';
+            
+            document.getElementById('resultContainer').style.display = 'block';
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalTotal').textContent = totalExercises;
+            
+            // Mensagem personalizada com base na pontuação
+            let message = '';
+            
+            if (score === totalExercises) {
+                message = 'Parabéns! Você acertou todas as questões. Você tem um excelente conhecimento de ciências.';
+            } else if (score >= totalExercises * 0.8) {
+                message = 'Excelente! Você tem um bom domínio das ciências. Continue praticando para perfeccionar seus conhecimentos.';
+            } else if (score >= totalExercises * 0.6) {
+                message = 'Bom trabalho! Você tem um conhecimento razoável das ciências. Continue estudando e praticando para melhorar ainda mais.';
+            } else if (score >= totalExercises * 0.4) {
+                message = 'Você está no caminho certo. Continue estudando e praticando para melhorar seu conhecimento das ciências.';
+            } else {
+                message = 'Recomendamos que você revise os conceitos básicos das ciências e pratique mais exercícios.';
+            }
+            
+            document.getElementById('resultMessage').textContent = message;
+        }
+        
+        // Função para reiniciar o quiz
+        function restartQuiz() {
+            // Resetar pontuação e contadores
+            score = 0;
+            answeredExercises = 0;
+            document.getElementById('score').textContent = score;
+            document.getElementById('progress').style.width = '0%';
+            
+            // Exibir novamente os exercícios e componentes
+            document.querySelectorAll('.exercise').forEach(exercise => {
+                exercise.style.display = 'block';
+                exercise.querySelectorAll('.option').forEach(option => {
+                    option.classList.remove('selected', 'correct', 'incorrect');
+                });
+                exercise.querySelector('.feedback').style.display = 'none';
+                exercise.querySelector('.explanation').style.display = 'none';
+                exercise.querySelector('.btn-check').disabled = false;
+                exercise.querySelector('.btn-check').textContent = 'Verificar';
+            });
+            
+            document.querySelector('.tabs').style.display = 'flex';
+            document.querySelector('.score').style.display = 'block';
+            document.querySelector('.progress-container').style.display = 'block';
+            document.getElementById('resultContainer').style.display = 'none';
+            
+            // Ativar a primeira tab
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            document.querySelector('.tab').classList.add('active');
+            document.getElementById('fisica').classList.add('active');
+        }
+    </script>
+</body>
+</html>
